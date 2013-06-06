@@ -14,7 +14,7 @@ namespace Bd
 
         public SQLiteConnection ConnectionWithBase()
         {
-            SQLiteConnection connection = new SQLiteConnection(@"Data Source = C:\Users\Dmitry\YandexDisk\vgu\2_cource\PrBD\basa.db3;");
+            SQLiteConnection connection = new SQLiteConnection(@"Data Source = C:\Users\Dmitry\YandexDisk\vgu\2_cource\PrBD\basaend.db3;");
             try
             {
                 connection.Open();
@@ -152,6 +152,26 @@ namespace Bd
                 i += 1;
             }
             Array.Resize(ref arrayNameColumn, i);
+        }
+
+        public int SearchEmployee(SQLiteConnection connection, string name)
+        {
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandText = "Select ID_Manager from Managers where Name = " + "'" + name + "'";
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                return 1;  // 1 - manager
+            }
+
+            command = new SQLiteCommand(connection);
+            command.CommandText = "Select ID_Employee from Employee where First_name = " + "'" + name + "'";
+            sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                return Convert.ToInt32(sqReader.GetValue(0));
+            }
+            return -1;
         }
     }
 }

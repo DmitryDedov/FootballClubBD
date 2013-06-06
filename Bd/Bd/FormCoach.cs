@@ -19,5 +19,10 @@ namespace Bd
         {
             this.Visible = false;
         }
+
+        private void FormCoach_Load(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

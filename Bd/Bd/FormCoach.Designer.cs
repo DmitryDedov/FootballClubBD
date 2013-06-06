@@ -38,6 +38,7 @@
             this.Name = "FormCoach";
             this.Text = "FormCoach";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormCoach_FormClosed);
+            this.Load += new System.EventHandler(this.FormCoach_Load);
             this.ResumeLayout(false);
 
         }

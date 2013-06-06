@@ -11,82 +11,31 @@ namespace Bd
 {
     public partial class FormMain : Form
     {
-        //Connection connection = new Connection();
-        //SQLiteConnection conn;
+        Connection connection = new Connection();
+        SQLiteConnection conn;
 
-        string password = "1";
         public FormMain()
         {
             InitializeComponent();
-            //CreateConnection();
+            CreateConnection();
         }
 
         private void CreateConnection()
         {
-            //conn = connection.ConnectionWithBase();
-            //FillComboBox(conn);
-        }
-
-        private void FillComboBox(SQLiteConnection conn)
-        {
-            //connection.GetListTable(conn);
-            //foreach (var i in Connection.arrayListNameTable)
-            //{
-                //comboBoxMain.Items.Add(i);
-            //}
-        }
-
-        private void buttonDo_Click(object sender, EventArgs e)
-        {
-            //string nameTable = comboBoxMain.SelectedItem.ToString();
-            //Form2 form2 = new Form2(nameTable, conn);
-            //form2.Show();
+            conn = connection.ConnectionWithBase();
         }
 
         private void buttonStartWork_Click(object sender, EventArgs e)
         {
-            if (radioButtonCoach.Checked)
+            if (connection.SearchEmployee(conn, textBoxInputName.Text) == 1)
             {
-                FormCalendar formCalendar = new FormCalendar();
-                formCalendar.Show();
+                FormManager formManager = new FormManager();
+                formManager.Visible = true;
             }
-            if (radioButtonAdmin.Checked)
-            {
-                if (CheckPassword(textBoxInputPassword.Text))
-                {
-                    Form2 form2 = new Form2();
-                    form2.Show();
-                }
-                else
-                    MessageBox.Show("Пароль неправильный!");
-            }
-        }
-
-        private void radioButtonAdmin_CheckedChanged(object sender, EventArgs e)
-        {
-            labelInputPassword.Show();
-            textBoxInputPassword.Show();
-        }
-
-        private bool CheckPassword(string str)
-        {
-            return str.Equals(password);
-        }
-
-        private void radioButtonUser_CheckedChanged(object sender, EventArgs e)
-        {
-            labelInputPassword.Visible = false;
-            textBoxInputPassword.Visible = false;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-
-        }
-
-        private void textBoxInputPassword_TextChanged(object sender, EventArgs e)
-        {
-            //textBoxInputPassword.PasswordChar = '*';
         }
     }
 }
