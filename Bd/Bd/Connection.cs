@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.SQLite;
 using System.Windows.Forms;
+using System.Data;
 
 namespace Bd
 {
     public class Connection
     {
         public static string[,] matrixSelectValues, matrixSelectValuesTemp;
+        public static string[,] matrixID_EmployeeTypeNameSurname, matrixID_ContractID_SponsorName;
         public static string[] arrayNameColumn, arrayGetValues, arrayCheckBox;
         SQLiteTransaction tr;
 
         public SQLiteConnection ConnectionWithBase()
         {
-            SQLiteConnection connection = new SQLiteConnection(@"Data Source = C:\Users\Dmitry\YandexDisk\vgu\2_cource\PrBD\basaend.db3;");
+            SQLiteConnection connection = new SQLiteConnection(@"Data Source = C:\Users\Dmitry\YandexDisk\vgu\2_cource\PrBD\basa3.db3;");
             try
             {
                 connection.Open();
@@ -154,10 +156,10 @@ namespace Bd
             Array.Resize(ref arrayNameColumn, i);
         }
 
-        public int SearchEmployee(SQLiteConnection connection, string name)
+        public int SearchEmployee(SQLiteConnection connection, string name, string password)
         {
             SQLiteCommand command = new SQLiteCommand(connection);
-            command.CommandText = "Select ID_Manager from Managers where Name = " + "'" + name + "'";
+            command.CommandText = "Select ID_Manager from Managers where Name = " + "'" + name + "' and Password = " + "'" + password + "'";
             SQLiteDataReader sqReader = command.ExecuteReader();
             while (sqReader.Read())
             {
@@ -172,6 +174,167 @@ namespace Bd
                 return Convert.ToInt32(sqReader.GetValue(0));
             }
             return -1;
+        }
+
+        public int CheckUser(SQLiteConnection connection, string name, string password)
+        {
+            object s = "";
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandText = "Select ID_FC from Managers where Name = " + "'" + name + "' and Password = " + "'" + password + "'";
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                s = sqReader.GetValue(0); 
+            }
+
+            return Convert.ToInt32(s);
+        }
+
+        public void AddNewEmployee(SQLiteConnection connection, int id_fc, string type, DateTime data_start, DateTime data_end, int price,
+                                    string first_name, string last_name, DateTime birthday, int salary, string place)
+        {
+            try
+            {
+                long id_contract;
+                SQLiteCommand command = new SQLiteCommand(connection);
+                command.CommandType = CommandType.Text;
+                command.CommandText = "insert into Contracts (Id_FC, Type, Data_Start, Date_End, Price) " +
+                                        "values (@id_fc, @type, @data_start, @data_end, @price); select last_insert_rowid();";
+                command.Parameters.Add(new SQLiteParameter("@id_fc", id_fc));
+                command.Parameters.Add(new SQLiteParameter("@type", type));
+                command.Parameters.Add(new SQLiteParameter("@data_start", data_start));
+                command.Parameters.Add(new SQLiteParameter("@data_end", data_end));
+                command.Parameters.Add(new SQLiteParameter("@price", price));
+                id_contract = (long)command.ExecuteScalar();
+
+                command = new SQLiteCommand(connection);
+                command.CommandType = CommandType.Text;
+                command.CommandText = "insert into Employees (ID_Contract, First_Name, Last_Name, Birthday, Salary, Place, Password) " +
+                                                                "values (@id_contract, @first_name, @last_name, @birthday, @salary, @place, null)";
+                command.Parameters.Add(new SQLiteParameter("@id_contract", id_contract));
+                command.Parameters.Add(new SQLiteParameter("@first_name", first_name));
+                command.Parameters.Add(new SQLiteParameter("@last_name", last_name));
+                command.Parameters.Add(new SQLiteParameter("@birthday", birthday));
+                command.Parameters.Add(new SQLiteParameter("@salary", salary));
+                command.Parameters.Add(new SQLiteParameter("@place", place));
+                command.ExecuteNonQuery();
+            }
+            catch
+            {
+
+            }
+        }
+
+        public void AddNewSponsor(SQLiteConnection connection, int id_fc, string type, DateTime data_start, DateTime data_end, int price,
+                            string name, string country)
+        {
+            try
+            {
+                long id_contract;
+                SQLiteCommand command = new SQLiteCommand(connection);
+                command.CommandType = CommandType.Text;
+                command.CommandText = "insert into Contracts (Id_FC, Type, Data_Start, Date_End, Price) " +
+                                        "values (@id_fc, @type, @data_start, @data_end, @price); select last_insert_rowid();";
+                command.Parameters.Add(new SQLiteParameter("@id_fc", id_fc));
+                command.Parameters.Add(new SQLiteParameter("@type", type));
+                command.Parameters.Add(new SQLiteParameter("@data_start", data_start));
+                command.Parameters.Add(new SQLiteParameter("@data_end", data_end));
+                command.Parameters.Add(new SQLiteParameter("@price", price));
+                id_contract = (long)command.ExecuteScalar();
+
+                command = new SQLiteCommand(connection);
+                command.CommandType = CommandType.Text;
+                command.CommandText = "insert into Sponsors (ID_Contract, Name, Country) " +
+                                                                "values (@id_contract, @name, @country)";
+                command.Parameters.Add(new SQLiteParameter("@id_contract", id_contract));
+                command.Parameters.Add(new SQLiteParameter("@name", name));
+                command.Parameters.Add(new SQLiteParameter("@country", country));
+                command.ExecuteNonQuery();
+            }
+            catch
+            {
+                RollbackOperation(connection);
+            }
+        }
+
+        public void ShowAllEmployeeOfClub(SQLiteConnection connection, int id_fc)
+        {
+            int i = 0, j = 0;
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandText = "select ID_Contract, Type, ID_Employee, First_name, Last_name from Contracts join Employees using (ID_Contract) where ID_FC = " + id_fc.ToString();
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                while (j < sqReader.FieldCount)
+                {
+                    matrixID_EmployeeTypeNameSurname[i, j] = sqReader.GetValue(j).ToString();
+                    j++;
+                }
+                i++;
+                j = 0;
+            }
+        }
+
+        public void GetNumbetEmployeeOfClub(SQLiteConnection connection, int id_fc)
+        {
+            int size = 0;
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandText = "select count(ID_Contract) from Contracts where Type <> 'Sponsor' and ID_FC = " + id_fc.ToString();
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                size = Convert.ToInt32(sqReader.GetValue(0));
+            }
+            matrixID_EmployeeTypeNameSurname = new string[size, 5];
+        }
+
+        public void GetNumbetSponsorOfClub(SQLiteConnection connection, int id_fc)
+        {
+            int size = 0;
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandText = "select count(ID_Contract) from Contracts where Type = 'Sponsor' and ID_FC = " + id_fc.ToString();
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                size = Convert.ToInt32(sqReader.GetValue(0));
+            }
+            matrixID_ContractID_SponsorName = new string[size, 3];
+        }
+
+        public void ShowAllSponsorOfClub(SQLiteConnection connection, int id_fc)
+        {
+            int i = 0, j = 0;
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandText = "select ID_Contract, ID_Sponsors, Name from Contracts join Sponsors using (ID_Contract) where ID_FC = " + id_fc.ToString();
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                while (j < sqReader.FieldCount)
+                {
+                    matrixID_ContractID_SponsorName[i, j] = sqReader.GetValue(j).ToString();
+                    j++;
+                }
+                i++;
+                j = 0;
+            }
+        }
+
+        public void DeleteEmployee(SQLiteConnection connection, int index)
+        {
+            SQLiteCommand com = new SQLiteCommand("delete from Employees where ID_Employee = " + matrixID_EmployeeTypeNameSurname[index, 2], connection);
+            com.ExecuteNonQuery();
+
+            com = new SQLiteCommand("delete from Contracts where ID_Contract = " + matrixID_EmployeeTypeNameSurname[index, 0], connection);
+            com.ExecuteNonQuery();
+        }
+
+        public void DeleteSponsor(SQLiteConnection connection, int index)
+        {
+            SQLiteCommand com = new SQLiteCommand("delete from Sponsors where ID_Sponsors = " + matrixID_ContractID_SponsorName[index, 1], connection);
+            com.ExecuteNonQuery();
+
+            com = new SQLiteCommand("delete from Contracts where ID_Contract = " + matrixID_ContractID_SponsorName[index, 0], connection);
+            com.ExecuteNonQuery();
         }
     }
 }

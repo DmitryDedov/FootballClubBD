@@ -31,11 +31,13 @@
             this.buttonStartWork = new System.Windows.Forms.Button();
             this.labelInputName = new System.Windows.Forms.Label();
             this.textBoxInputName = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBoxInputPassword = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // buttonStartWork
             // 
-            this.buttonStartWork.Location = new System.Drawing.Point(12, 51);
+            this.buttonStartWork.Location = new System.Drawing.Point(12, 64);
             this.buttonStartWork.Name = "buttonStartWork";
             this.buttonStartWork.Size = new System.Drawing.Size(134, 23);
             this.buttonStartWork.TabIndex = 5;
@@ -46,7 +48,7 @@
             // labelInputName
             // 
             this.labelInputName.AutoSize = true;
-            this.labelInputName.Location = new System.Drawing.Point(12, 9);
+            this.labelInputName.Location = new System.Drawing.Point(12, 15);
             this.labelInputName.Name = "labelInputName";
             this.labelInputName.Size = new System.Drawing.Size(86, 13);
             this.labelInputName.TabIndex = 6;
@@ -54,17 +56,36 @@
             // 
             // textBoxInputName
             // 
-            this.textBoxInputName.Location = new System.Drawing.Point(12, 25);
+            this.textBoxInputName.Location = new System.Drawing.Point(111, 12);
             this.textBoxInputName.Name = "textBoxInputName";
-            this.textBoxInputName.Size = new System.Drawing.Size(179, 20);
+            this.textBoxInputName.Size = new System.Drawing.Size(104, 20);
             this.textBoxInputName.TabIndex = 7;
             this.textBoxInputName.Text = "Roman";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 41);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(82, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Input password:";
+            // 
+            // textBoxInputPassword
+            // 
+            this.textBoxInputPassword.Location = new System.Drawing.Point(111, 38);
+            this.textBoxInputPassword.Name = "textBoxInputPassword";
+            this.textBoxInputPassword.Size = new System.Drawing.Size(104, 20);
+            this.textBoxInputPassword.TabIndex = 9;
+            this.textBoxInputPassword.Text = "ra";
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(205, 87);
+            this.ClientSize = new System.Drawing.Size(223, 97);
+            this.Controls.Add(this.textBoxInputPassword);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxInputName);
             this.Controls.Add(this.labelInputName);
             this.Controls.Add(this.buttonStartWork);
@@ -81,6 +102,8 @@
         private System.Windows.Forms.Button buttonStartWork;
         private System.Windows.Forms.Label labelInputName;
         private System.Windows.Forms.TextBox textBoxInputName;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBoxInputPassword;
 
 
 

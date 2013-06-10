@@ -31,11 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormManager));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabelMakeContract = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSplitButtonMakeContract = new System.Windows.Forms.ToolStripSplitButton();
             this.makeContractToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.employeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sponsorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabelDismissEmployee = new System.Windows.Forms.ToolStripLabel();
             this.toolStripButtonDismissEmployee = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -46,8 +46,8 @@
             this.toolStripButtonOffer = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabelChangeSalary = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonChangeSalary = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,12 +80,6 @@
             this.toolStripLabelMakeContract.Name = "toolStripLabelMakeContract";
             this.toolStripLabelMakeContract.Size = new System.Drawing.Size(99, 22);
             this.toolStripLabelMakeContract.Text = "Make contract ->";
-            this.toolStripLabelMakeContract.Click += new System.EventHandler(this.toolStripLabel1_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripSplitButtonMakeContract
             // 
@@ -112,12 +106,19 @@
             this.employeeToolStripMenuItem.Name = "employeeToolStripMenuItem";
             this.employeeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.employeeToolStripMenuItem.Text = "Employee";
+            this.employeeToolStripMenuItem.Click += new System.EventHandler(this.employeeToolStripMenuItem_Click);
             // 
             // sponsorToolStripMenuItem
             // 
             this.sponsorToolStripMenuItem.Name = "sponsorToolStripMenuItem";
             this.sponsorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.sponsorToolStripMenuItem.Text = "Sponsor";
+            this.sponsorToolStripMenuItem.Click += new System.EventHandler(this.sponsorToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripLabelDismissEmployee
             // 
@@ -133,6 +134,7 @@
             this.toolStripButtonDismissEmployee.Name = "toolStripButtonDismissEmployee";
             this.toolStripButtonDismissEmployee.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonDismissEmployee.Text = "Dismiss Employee";
+            this.toolStripButtonDismissEmployee.Click += new System.EventHandler(this.toolStripButtonDismissEmployee_Click);
             // 
             // toolStripSeparator2
             // 
@@ -153,6 +155,7 @@
             this.toolStripButtonCleanSponsor.Name = "toolStripButtonCleanSponsor";
             this.toolStripButtonCleanSponsor.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonCleanSponsor.Text = "toolStripButtonClean sponsor";
+            this.toolStripButtonCleanSponsor.Click += new System.EventHandler(this.toolStripButtonCleanSponsor_Click);
             // 
             // toolStripSeparator3
             // 
@@ -185,19 +188,19 @@
             this.toolStripLabelChangeSalary.Size = new System.Drawing.Size(95, 22);
             this.toolStripLabelChangeSalary.Text = "ChangeSalary ->";
             // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
-            // 
             // toolStripButtonChangeSalary
             // 
             this.toolStripButtonChangeSalary.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonChangeSalary.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonChangeSalary.Image")));
             this.toolStripButtonChangeSalary.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonChangeSalary.Name = "toolStripButtonChangeSalary";
-            this.toolStripButtonChangeSalary.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonChangeSalary.Size = new System.Drawing.Size(23, 20);
             this.toolStripButtonChangeSalary.Text = "ChangeSalary";
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
             // 
             // FormManager
             // 

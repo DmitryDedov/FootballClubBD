@@ -27,9 +27,11 @@ namespace Bd
 
         private void buttonStartWork_Click(object sender, EventArgs e)
         {
-            if (connection.SearchEmployee(conn, textBoxInputName.Text) == 1)
+            int id_fc;
+            if (connection.SearchEmployee(conn, textBoxInputName.Text, textBoxInputPassword.Text) == 1)
             {
-                FormManager formManager = new FormManager();
+                id_fc = connection.CheckUser(conn, textBoxInputName.Text, textBoxInputPassword.Text);
+                FormManager formManager = new FormManager(id_fc);
                 formManager.Visible = true;
             }
         }

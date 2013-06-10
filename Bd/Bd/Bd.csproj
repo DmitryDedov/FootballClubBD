@@ -62,17 +62,41 @@
     <Compile Include="Form3.Designer.cs">
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAddEmployee.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAddEmployee.Designer.cs">
+      <DependentUpon>FormAddEmployee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAddSponsor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAddSponsor.Designer.cs">
+      <DependentUpon>FormAddSponsor.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormCalendar.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormCalendar.Designer.cs">
       <DependentUpon>FormCalendar.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormCleanSponsor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCleanSponsor.Designer.cs">
+      <DependentUpon>FormCleanSponsor.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormCoach.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormCoach.Designer.cs">
       <DependentUpon>FormCoach.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormDismissEmployee.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDismissEmployee.Designer.cs">
+      <DependentUpon>FormDismissEmployee.cs</DependentUpon>
     </Compile>
     <Compile Include="FormManager.cs">
       <SubType>Form</SubType>
@@ -91,11 +115,23 @@
     <EmbeddedResource Include="Form3.resx">
       <DependentUpon>Form3.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormAddEmployee.resx">
+      <DependentUpon>FormAddEmployee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAddSponsor.resx">
+      <DependentUpon>FormAddSponsor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormCalendar.resx">
       <DependentUpon>FormCalendar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormCleanSponsor.resx">
+      <DependentUpon>FormCleanSponsor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormCoach.resx">
       <DependentUpon>FormCoach.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDismissEmployee.resx">
+      <DependentUpon>FormDismissEmployee.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormManager.resx">
       <DependentUpon>FormManager.cs</DependentUpon>
