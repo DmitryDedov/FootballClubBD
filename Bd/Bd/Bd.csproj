@@ -80,6 +80,18 @@
     <Compile Include="FormCalendar.Designer.cs">
       <DependentUpon>FormCalendar.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormChangeSalary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormChangeSalary.Designer.cs">
+      <DependentUpon>FormChangeSalary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormChangeTraining.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormChangeTraining.Designer.cs">
+      <DependentUpon>FormChangeTraining.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormCleanSponsor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +104,18 @@
     <Compile Include="FormCoach.Designer.cs">
       <DependentUpon>FormCoach.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormCreateMath.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCreateMath.Designer.cs">
+      <DependentUpon>FormCreateMath.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCreateTraining.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCreateTraining.Designer.cs">
+      <DependentUpon>FormCreateTraining.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormDismissEmployee.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +127,12 @@
     </Compile>
     <Compile Include="FormManager.Designer.cs">
       <DependentUpon>FormManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormOffer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormOffer.Designer.cs">
+      <DependentUpon>FormOffer.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -124,17 +154,32 @@
     <EmbeddedResource Include="FormCalendar.resx">
       <DependentUpon>FormCalendar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormChangeSalary.resx">
+      <DependentUpon>FormChangeSalary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormChangeTraining.resx">
+      <DependentUpon>FormChangeTraining.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormCleanSponsor.resx">
       <DependentUpon>FormCleanSponsor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormCoach.resx">
       <DependentUpon>FormCoach.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormCreateMath.resx">
+      <DependentUpon>FormCreateMath.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCreateTraining.resx">
+      <DependentUpon>FormCreateTraining.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormDismissEmployee.resx">
       <DependentUpon>FormDismissEmployee.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormManager.resx">
       <DependentUpon>FormManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormOffer.resx">
+      <DependentUpon>FormOffer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -144,6 +189,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -154,6 +200,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\training.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\training.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

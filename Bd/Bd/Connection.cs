@@ -10,7 +10,8 @@ namespace Bd
     public class Connection
     {
         public static string[,] matrixSelectValues, matrixSelectValuesTemp;
-        public static string[,] matrixID_EmployeeTypeNameSurname, matrixID_ContractID_SponsorName;
+        public static string[,] matrixID_EmployeeTypeNameSurname, matrixID_ContractID_SponsorName, matrixID_EmployeemFirst_nameLast_nameSalary, matrixTurnirsID_TurnirName,
+                                matrixClubsOfTurnirID_FCName;
         public static string[] arrayNameColumn, arrayGetValues, arrayCheckBox;
         SQLiteTransaction tr;
 
@@ -155,9 +156,16 @@ namespace Bd
             }
             Array.Resize(ref arrayNameColumn, i);
         }
-
+        /// <summary>
+        /// метод, которые позволяет узнать какой человек залогинился на сайте
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="name">имя этого человека</param>
+        /// <param name="password">пароль</param>
+        /// <returns></returns>
         public int SearchEmployee(SQLiteConnection connection, string name, string password)
         {
+            string str;
             SQLiteCommand command = new SQLiteCommand(connection);
             command.CommandText = "Select ID_Manager from Managers where Name = " + "'" + name + "' and Password = " + "'" + password + "'";
             SQLiteDataReader sqReader = command.ExecuteReader();
@@ -167,20 +175,42 @@ namespace Bd
             }
 
             command = new SQLiteCommand(connection);
-            command.CommandText = "Select ID_Employee from Employee where First_name = " + "'" + name + "'";
+            command.CommandText = "select Type from Contracts join Employees using (ID_Contract) where First_Name = '" + name + "' and Password = '" + password + "';";
             sqReader = command.ExecuteReader();
             while (sqReader.Read())
             {
-                return Convert.ToInt32(sqReader.GetValue(0));
+                str = sqReader.GetValue(0).ToString();
+                if (str == "Coach")
+                    return 2;  // 2 - coahc
             }
             return -1;
         }
-
-        public int CheckUser(SQLiteConnection connection, string name, string password)
+        /// <summary>
+        /// возвращает айди клуба, к которому принадлежит менеджер
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="name"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public int CheckManager(SQLiteConnection connection, string name, string password)
         {
             object s = "";
             SQLiteCommand command = new SQLiteCommand(connection);
             command.CommandText = "Select ID_FC from Managers where Name = " + "'" + name + "' and Password = " + "'" + password + "'";
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                s = sqReader.GetValue(0); 
+            }
+
+            return Convert.ToInt32(s);
+        }
+
+        public int CheckCoachOrPlayer(SQLiteConnection connection, string name, string password)
+        {
+            object s = "";
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandText = "select ID_FC from Contracts join Employees using (ID_Contract) where First_Name = '" + name + "' and Password = '" + password + "'";
             SQLiteDataReader sqReader = command.ExecuteReader();
             while (sqReader.Read())
             {
@@ -261,7 +291,8 @@ namespace Bd
         {
             int i = 0, j = 0;
             SQLiteCommand command = new SQLiteCommand(connection);
-            command.CommandText = "select ID_Contract, Type, ID_Employee, First_name, Last_name from Contracts join Employees using (ID_Contract) where ID_FC = " + id_fc.ToString();
+            command.CommandText = "select ID_Contract, Type, ID_Employee, First_name, Last_name from Contracts join Employees using (ID_Contract) where ID_FC = " + 
+                                    id_fc.ToString();
             SQLiteDataReader sqReader = command.ExecuteReader();
             while (sqReader.Read())
             {
@@ -335,6 +366,246 @@ namespace Bd
 
             com = new SQLiteCommand("delete from Contracts where ID_Contract = " + matrixID_ContractID_SponsorName[index, 0], connection);
             com.ExecuteNonQuery();
+        }
+
+        public int GetBudget(SQLiteConnection connection, int id_fc)
+        {
+            int budget = 0;
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandText = "select Budget from FootballClubs where ID_FC = " + id_fc.ToString();
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                budget = Convert.ToInt32(sqReader.GetValue(0));
+            }
+            return budget;
+        }
+
+        public void Offer(SQLiteConnection connection, int id_fc, int offerValue)
+        {
+            SQLiteCommand com = new SQLiteCommand("update FootballClubs set Budget = " + offerValue.ToString() + " where ID_FC = " + id_fc.ToString(), connection);
+            com.ExecuteNonQuery();
+        }
+
+        public void GetListEmployeeForChangeSalary(SQLiteConnection connection, int id_fc)
+        {
+            int i = 0, j = 0;
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandText = "select Type, ID_Employee, First_name, Last_name, Salary from Contracts join Employees using (ID_Contract) where ID_FC = " + 
+                                    id_fc.ToString();
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                while (j < sqReader.FieldCount)
+                {
+                    matrixID_EmployeemFirst_nameLast_nameSalary[i, j] = sqReader.GetValue(j).ToString();
+                    j++;
+                }
+                i++;
+                j = 0;
+            }
+        }
+
+        public void GetNumberEmployeeOfClubForChangeSalary(SQLiteConnection connection, int id_fc)
+        {
+            int size = 0;
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandText = "select count(ID_Contract) from Contracts where Type <> 'Sponsor' and ID_FC = " + id_fc.ToString();
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                size = Convert.ToInt32(sqReader.GetValue(0));
+            }
+            matrixID_EmployeemFirst_nameLast_nameSalary = new string[size, 5];
+        }
+
+        public void ChangeSalaryOfEmployee(SQLiteConnection connection, double percent, int index)
+        {
+            SQLiteCommand com = new SQLiteCommand("update Employees set Salary = " + 
+                                                    Math.Round(Convert.ToInt32(matrixID_EmployeemFirst_nameLast_nameSalary[index, 4]) * (1 + percent)) + 
+                                                    " where ID_Employee = " + matrixID_EmployeemFirst_nameLast_nameSalary[index, 1], connection);
+            com.ExecuteNonQuery();
+        }
+
+        public bool CheckTraining(SQLiteConnection connection, string date, int id_fc)
+        {
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandType = CommandType.Text;
+            command.CommandText = "select ID_Routine from Routine where Date = @date and ID_FC = @id_fc";
+            command.Parameters.Add(new SQLiteParameter("@date", date));
+            command.Parameters.Add(new SQLiteParameter("@id_fc", id_fc));
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void CreateTraining(SQLiteConnection connection, int id_fc, string date, string time, string place)
+        {
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandType = CommandType.Text;
+            command.CommandText = "insert into Routine (Date, Time, Place, ID_FC, Type) values (@date, @time, @place, @id_fc, 'Training');";
+            command.Parameters.Add(new SQLiteParameter("@date", date));
+            command.Parameters.Add(new SQLiteParameter("@time", time));
+            command.Parameters.Add(new SQLiteParameter("@place", place));
+            command.Parameters.Add(new SQLiteParameter("@id_fc", id_fc));
+            command.ExecuteNonQuery();
+
+            tr = connection.BeginTransaction();
+            tr.Commit();
+        }
+
+        public void DeleteTraining(SQLiteConnection connection, int id_fc, string date)
+        {
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandType = CommandType.Text;
+            command.CommandText = "delete from Routine where ID_FC = @id_fc and Date = @date";
+            command.Parameters.Add(new SQLiteParameter("@id_fc", id_fc));
+            command.Parameters.Add(new SQLiteParameter("@date", date));
+            command.ExecuteNonQuery();
+        }
+
+        public string GetTimeTrainingWhichNeedChange(SQLiteConnection connection, string date, int id_fc)
+        {
+            string s;
+            DateTime dt = DateTime.Now;
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandType = CommandType.Text;
+            command.CommandText = "select Time from Routine where Date = @date and ID_FC = @id_fc";
+            command.Parameters.Add(new SQLiteParameter("@id_fc", id_fc));
+            command.Parameters.Add(new SQLiteParameter("@date", date));
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                dt = Convert.ToDateTime(sqReader.GetValue(0));
+            }
+            s = dt.ToString("H:mm");
+            return s;
+        }
+
+        public string GetPlaceTrainingWhichNeedChange(SQLiteConnection connection, string date, int id_fc)
+        {
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandType = CommandType.Text;
+            command.CommandText = "select Place from Routine where Date = @date and ID_FC = @id_fc";
+            command.Parameters.Add(new SQLiteParameter("@id_fc", id_fc));
+            command.Parameters.Add(new SQLiteParameter("@date", date));
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                return sqReader.GetValue(0).ToString();
+            }
+            return null;
+        }
+
+        public void ChangeTimeTraining(SQLiteConnection connection, string date, int id_fc, string time)
+        {
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandType = CommandType.Text;
+            command.CommandText = "update Routine set Time = @time where Date = @date and ID_FC = @id_fc";
+            command.Parameters.Add(new SQLiteParameter("@id_fc", id_fc));
+            command.Parameters.Add(new SQLiteParameter("@date", date));
+            command.Parameters.Add(new SQLiteParameter("@time", time));
+            command.ExecuteNonQuery();
+        }
+
+        public void ChangePlaceTraining(SQLiteConnection connection, string date, int id_fc, string place)
+        {
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandType = CommandType.Text;
+            command.CommandText = "update Routine set Place = @place where Date = @date and ID_FC = @id_fc";
+            command.Parameters.Add(new SQLiteParameter("@id_fc", id_fc));
+            command.Parameters.Add(new SQLiteParameter("@date", date));
+            command.Parameters.Add(new SQLiteParameter("@place", place));
+            command.ExecuteNonQuery();
+        }
+
+        public void GetNumberTurnirsOfClubs(SQLiteConnection connection, int id_fc)
+        {
+            int size = 0;
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandType = CommandType.Text;
+            command.CommandText = "select count(Name) from Turnirs where ID_Turnir in (select ID_Turnir from [Turnirs-Club] where ID_FC = @id_fc)";
+            command.Parameters.Add(new SQLiteParameter("@id_fc", id_fc));
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                size = Convert.ToInt32(sqReader.GetValue(0));
+            }
+            matrixTurnirsID_TurnirName = new string[size, 2];
+        }
+
+        public void GetAllTurnursOfClubs(SQLiteConnection connection, int id_fc)
+        {
+            int i = 0, j = 0;
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandType = CommandType.Text;
+            command.CommandText = "select ID_Turnir, Name from Turnirs where ID_Turnir in (select ID_Turnir from [Turnirs-Club] where ID_FC = @id_fc)";
+            command.Parameters.Add(new SQLiteParameter("@id_fc", id_fc));
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                while (j < sqReader.FieldCount)
+                {
+                    matrixTurnirsID_TurnirName[i, j] = sqReader.GetValue(j).ToString();
+                    j++;
+                }
+                i++;
+                j = 0;
+            }
+        }
+
+        public void GetNumberClubsOfTurnir(SQLiteConnection connection, int id_fc, int id_turnir)
+        {
+            int size = 0;
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandType = CommandType.Text;
+            command.CommandText = "select count(ID_FC) from [Turnirs-Club] join FootballClubs using (ID_FC) where ID_Turnir = @id_turnir and ID_FC <> @id_fc";
+            command.Parameters.Add(new SQLiteParameter("@id_fc", id_fc));
+            command.Parameters.Add(new SQLiteParameter("@id_turnir", id_turnir));
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                size = Convert.ToInt32(sqReader.GetValue(0));
+            }
+            matrixClubsOfTurnirID_FCName = new string[size, 2];
+        }
+
+        public void GetClubsOfTurnir(SQLiteConnection connection, int id_fc, int id_turnir)
+        {
+            int i = 0, j = 0;
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandType = CommandType.Text;
+            command.CommandText = "select ID_FC, Name from [Turnirs-Club] join FootballClubs using (ID_FC) where ID_Turnir = @id_turnir and ID_FC <> @id_fc";
+            command.Parameters.Add(new SQLiteParameter("@id_fc", id_fc));
+            command.Parameters.Add(new SQLiteParameter("@id_turnir", id_turnir));
+            SQLiteDataReader sqReader = command.ExecuteReader();
+            while (sqReader.Read())
+            {
+                while (j < sqReader.FieldCount)
+                {
+                    matrixClubsOfTurnirID_FCName[i, j] = sqReader.GetValue(j).ToString();
+                    j++;
+                }
+                i++;
+                j = 0;
+            }
+        }
+
+        public void CreateMatch(SQLiteConnection connection, int id_turnir, string data_match, string time_match, int id_fc_host, int id_fc_guest)
+        {
+            SQLiteCommand command = new SQLiteCommand(connection);
+            command.CommandType = CommandType.Text;
+            command.CommandText = "insert into Matches (ID_Turnir, Data_Match, Time_Match, ID_FC_Host, ID_FC_Guest, MatchExists) " +
+                                    "values (@id_turnir, @data_match, @time_match, @id_fc_host, @id_fc_guest, 'false')";
+            command.Parameters.Add(new SQLiteParameter("@id_turnir", id_turnir));
+            command.Parameters.Add(new SQLiteParameter("@data_match", data_match));
+            command.Parameters.Add(new SQLiteParameter("@time_match", time_match));
+            command.Parameters.Add(new SQLiteParameter("@id_fc_host", id_fc_host));
+            command.Parameters.Add(new SQLiteParameter("@id_fc_guest", id_fc_guest));
+            command.ExecuteNonQuery();
         }
     }
 }

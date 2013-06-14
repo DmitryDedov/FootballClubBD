@@ -27,12 +27,19 @@ namespace Bd
 
         private void buttonStartWork_Click(object sender, EventArgs e)
         {
-            int id_fc;
-            if (connection.SearchEmployee(conn, textBoxInputName.Text, textBoxInputPassword.Text) == 1)
+            int id_fc, typeUser;
+            typeUser = connection.SearchEmployee(conn, textBoxInputName.Text, textBoxInputPassword.Text);
+            if (typeUser == 1)
             {
-                id_fc = connection.CheckUser(conn, textBoxInputName.Text, textBoxInputPassword.Text);
+                id_fc = connection.CheckManager(conn, textBoxInputName.Text, textBoxInputPassword.Text);
                 FormManager formManager = new FormManager(id_fc);
                 formManager.Visible = true;
+            }
+            if (typeUser == 2)
+            {
+                id_fc = connection.CheckCoachOrPlayer(conn, textBoxInputName.Text, textBoxInputPassword.Text);
+                FormCalendar formCalendar = new FormCalendar(typeUser, id_fc, conn);
+                formCalendar.Visible = true;
             }
         }
 

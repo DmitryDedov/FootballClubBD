@@ -45,5 +45,17 @@ namespace Bd
             FormCleanSponsor formCleanSponsor = new FormCleanSponsor(id_fc);
             formCleanSponsor.Visible = true;
         }
+
+        private void toolStripButtonOffer_Click(object sender, EventArgs e)
+        {
+            FormOffer formOffer = new FormOffer(id_fc);
+            formOffer.Visible = true;
+        }
+
+        private void toolStripButtonChangeSalary_Click(object sender, EventArgs e)
+        {
+            FormChangeSalary formChangeSalary = new FormChangeSalary(id_fc);
+            formChangeSalary.Visible = true;
+        }
     }
 }

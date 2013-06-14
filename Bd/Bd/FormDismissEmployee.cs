@@ -46,6 +46,7 @@ namespace Bd
         {
             connection.DeleteEmployee(conn, listBox.SelectedIndex);
 
+            listBox.Items.Clear();
             connection.GetNumbetEmployeeOfClub(conn, id_fc);
             connection.ShowAllEmployeeOfClub(conn, id_fc);
             FillOutListBox();

@@ -60,7 +60,7 @@
             this.textBoxInputName.Name = "textBoxInputName";
             this.textBoxInputName.Size = new System.Drawing.Size(104, 20);
             this.textBoxInputName.TabIndex = 7;
-            this.textBoxInputName.Text = "Roman";
+            this.textBoxInputName.Text = "Jose";
             // 
             // label1
             // 
@@ -77,13 +77,13 @@
             this.textBoxInputPassword.Name = "textBoxInputPassword";
             this.textBoxInputPassword.Size = new System.Drawing.Size(104, 20);
             this.textBoxInputPassword.TabIndex = 9;
-            this.textBoxInputPassword.Text = "ra";
+            this.textBoxInputPassword.Text = "jm";
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(223, 97);
+            this.ClientSize = new System.Drawing.Size(226, 93);
             this.Controls.Add(this.textBoxInputPassword);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxInputName);
